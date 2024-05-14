@@ -30,7 +30,11 @@ class Sublist implements Iterable<SublistLine> {
     getLine = (lineNumber: number): SublistLine => {
         return new SublistLine(this, lineNumber);
     }
-
+    getCurrentLine = (): SublistLine => {
+        return new SublistLine(this, this.rec.getCurrentSublistIndex({
+            sublistId: this.sublistId
+        }));
+    }
     getNSSublist = (): record.Sublist => {
         return this.rec.getSublist({ sublistId: this.sublistId });
     }
@@ -145,21 +149,45 @@ class SublistField {
     }
 
     getValue = (): record.FieldValue => {
-        return this.record.getSublistValue({
-            fieldId: this.fieldId,
-            line: this.line.lineNumber,
-            sublistId: this.line.sublist.sublistId,
-        });
+        const rec = this.record;
+        const fieldId = this.fieldId;
+        const line = this.line.lineNumber;
+        const sublistId = this.line.sublist.sublistId;
+        if (rec.isDynamic || !("getSublistValue" in rec)) {
+            rec.selectLine({ sublistId: sublistId, line: line });
+            return rec.getCurrentSublistValue({
+                fieldId: fieldId,
+                sublistId: sublistId,
+            });
+        }
+        else {
+            return this.record.getSublistValue({
+                fieldId: fieldId,
+                line: line,
+                sublistId: sublistId,
+            });
+        }
     }
-
     getText = (): string => {
-        return this.record.getSublistText({
-            fieldId: this.fieldId,
-            line: this.line.lineNumber,
-            sublistId: this.line.sublist.sublistId,
-        });
+        const rec = this.record;
+        const fieldId = this.fieldId;
+        const line = this.line.lineNumber;
+        const sublistId = this.line.sublist.sublistId;
+        if (rec.isDynamic || !("getSublistText" in rec)) {
+            rec.selectLine({ sublistId: sublistId, line: line });
+            return rec.getCurrentSublistText({
+                fieldId: fieldId,
+                sublistId: sublistId,
+            });
+        }
+        else {
+            return this.record.getSublistText({
+                fieldId: fieldId,
+                line: line,
+                sublistId: sublistId,
+            });
+        }
     }
-
     getSubrecord = (): record.Record => {
         const rec = this.record;
         const fieldId = this.fieldId;
@@ -170,7 +198,7 @@ class SublistField {
             return rec.getCurrentSublistSubrecord({ sublistId, fieldId });
         } else {
             return rec.getSublistSubrecord({ sublistId, fieldId, line });
-        } 
+        }
     }
 
     setValue = (value: record.FieldValue): SublistLine => {

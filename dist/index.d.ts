@@ -1,5 +1,5 @@
 import * as record from 'N/record';
-declare type Record = record.Record | record.ClientCurrentRecord;
+type Record = record.Record | record.ClientCurrentRecord;
 declare function getSublist(rec: Record, sublistId: string): Sublist;
 declare class Sublist implements Iterable<SublistLine> {
     private rec;
@@ -9,6 +9,7 @@ declare class Sublist implements Iterable<SublistLine> {
     constructor(rec: Record, sublistId: string);
     lineCount: () => number;
     getLine: (lineNumber: number) => SublistLine;
+    getCurrentLine: () => SublistLine;
     getNSSublist: () => record.Sublist;
     addLine: (index: number) => SublistLine;
     addNewLine: () => SublistLine;
