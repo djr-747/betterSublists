@@ -1,12 +1,14 @@
 import * as record from 'N/record';
 type Record = record.Record | record.ClientCurrentRecord;
-declare function getSublist(rec: Record, sublistId: string): Sublist;
+declare function getSublist(rec: Record, sublistId: string, isDynamic?: boolean | null): Sublist;
 declare class Sublist implements Iterable<SublistLine> {
     private rec;
     private _sublistId;
+    private _isDynamic;
     get sublistId(): string;
     get record(): Record;
-    constructor(rec: Record, sublistId: string);
+    get isDynamic(): boolean;
+    constructor(rec: Record, sublistId: string, isDynamic?: boolean | null);
     lineCount: () => number;
     getLine: (lineNumber: number) => SublistLine;
     getCurrentLine: () => SublistLine;
@@ -40,6 +42,7 @@ declare class SublistField {
     private fieldId;
     constructor(line: SublistLine, fieldId: string);
     get record(): Record;
+    get isDynamic(): boolean;
     getValue: () => record.FieldValue;
     getText: () => string;
     getSubrecord: () => record.Record;
