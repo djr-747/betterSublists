@@ -25,6 +25,14 @@ A complete list of methods can be found in `dist/index.d.ts`. If you don't use T
 
 Usage of this module always starts by calling `getSublist`.
 
+## `getSublist`
+The getSublist function allows the isDynamic flag to be passed in to force Dynamic or Static mode. If the parameter is not provided, the isDynamic field will be sourced from rec.isDynamic.
+
+```ts
+function getSublist(rec: Record, sublistId: string, isDynamic: boolean | null = null): Sublist
+```
+## Working with Sublist
+
 Once you have a `Sublist` you can fetch a line directly with `getLine` or iterate over the entire sublist using `forEach`. The `Sublist` type is also an iterable type so you can use a traditional for loop:
 
 ```ts
@@ -69,5 +77,9 @@ for (const line of getSublist(rec, 'item')) {
             .modifyValue(desc => 'Bulk Discount: ' + desc)
     }
 }
+
+// Example with isDynamic flag
+const dynamicSublist = getSublist(rec, 'item', true);
+const staticSublist = getSublist(rec, 'item', false);
 ```
 
