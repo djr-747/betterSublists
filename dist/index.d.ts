@@ -46,7 +46,7 @@ declare class SublistField {
     getValue: () => record.FieldValue;
     getText: () => string;
     getSubrecord: () => record.Record;
-    setValue: (value: record.FieldValue) => SublistLine;
+    setValue: (value: record.FieldValue, ignoreFieldChange?: boolean) => SublistLine;
     setText: (text: string) => SublistLine;
     modifyValue: <T extends record.FieldValue>(closure: (oldValue: T) => T) => SublistLine;
     modifyText: (closure: (oldValue: string) => string) => SublistLine;

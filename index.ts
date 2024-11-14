@@ -212,16 +212,16 @@ class SublistField {
         }
     }
 
-    setValue = (value: record.FieldValue): SublistLine => {
+    setValue = (value: record.FieldValue, ignoreFieldChange: boolean = false): SublistLine => {
         const rec = this.record;
         const sublistId = this.line.sublist.sublistId;
         const line = this.line.lineNumber;
         const fieldId = this.fieldId;
         if (this.isDynamic || !("setSublistValue" in rec)) {
             rec.selectLine({ sublistId, line });
-            rec.setCurrentSublistValue({ sublistId, fieldId, value });
+            rec.setCurrentSublistValue({ sublistId, fieldId, value,ignoreFieldChange });
         } else {
-            rec.setSublistValue({ sublistId, fieldId, line, value });
+            rec.setSublistValue({ sublistId, fieldId, line, value});
         }
         return this.line;
     }

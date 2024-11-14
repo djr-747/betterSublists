@@ -256,14 +256,15 @@ define(["require", "exports"], function (require, exports) {
                     return rec.getSublistSubrecord({ sublistId: sublistId, fieldId: fieldId, line: line });
                 }
             };
-            this.setValue = function (value) {
+            this.setValue = function (value, ignoreFieldChange) {
+                if (ignoreFieldChange === void 0) { ignoreFieldChange = false; }
                 var rec = _this.record;
                 var sublistId = _this.line.sublist.sublistId;
                 var line = _this.line.lineNumber;
                 var fieldId = _this.fieldId;
                 if (_this.isDynamic || !("setSublistValue" in rec)) {
                     rec.selectLine({ sublistId: sublistId, line: line });
-                    rec.setCurrentSublistValue({ sublistId: sublistId, fieldId: fieldId, value: value });
+                    rec.setCurrentSublistValue({ sublistId: sublistId, fieldId: fieldId, value: value, ignoreFieldChange: ignoreFieldChange });
                 }
                 else {
                     rec.setSublistValue({ sublistId: sublistId, fieldId: fieldId, line: line, value: value });
